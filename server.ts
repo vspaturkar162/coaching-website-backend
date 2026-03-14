@@ -17,17 +17,21 @@ connectDB()
 const app = express()
 
 /* MIDDLEWARE */
+// app.use(express.json())
+// app.use(
+//   cors({
+//     origin: [
+//       "http://localhost:5173",
+//       "https://coaching-website-frontend-pi.vercel.app"
+//     ],
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     credentials: true
+//   })
+// )
+
+app.use(cors())
+app.options("*", cors())
 app.use(express.json())
-app.use(
-  cors({
-    origin: [
-      "http://localhost:5173",
-      "https://coaching-website-frontend-pi.vercel.app"
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
-  })
-)
 
 /* ROUTES */
 app.use("/api/hero", heroRoutes)
