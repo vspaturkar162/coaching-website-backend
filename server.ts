@@ -81,7 +81,7 @@ app.use(cors({
 }))
 
 // Important for preflight requests
-app.options("*", cors())
+
 
 // body parser
 app.use(express.json())
