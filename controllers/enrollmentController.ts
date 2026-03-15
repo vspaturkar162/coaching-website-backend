@@ -21,8 +21,9 @@ export const submitEnrollment = async (
 ): Promise<void> => {
   try {
     const { name, phone, email, course } = req.body
+    console.log("New enrollment:", req.body)
 
-    const enrollment = new Enrollment({ name, phone, email, course })
+    const enrollment = new Enrollment({ name, phone, email, course, status: "pending" })
     const saved = await enrollment.save()
 
     res.status(201).json({
@@ -30,7 +31,32 @@ export const submitEnrollment = async (
       data: saved
     })
   } catch (error) {
+    console.error("submitEnrollment error:", error)
     res.status(500).json({ message: "Error submitting enrollment" })
+  }
+}
+
+export const updateEnrollment = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params
+    const updated = await Enrollment.findByIdAndUpdate(
+      id,
+      req.body,
+      { new: true }
+    )
+
+    if (!updated) {
+      res.status(404).json({ message: "Enrollment not found" })
+      return
+    }
+
+    res.json(updated)
+  } catch (error) {
+    console.error("updateEnrollment error:", error)
+    res.status(500).json({ message: "Error updating enrollment" })
   }
 }
 
