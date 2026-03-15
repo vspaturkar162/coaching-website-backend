@@ -57,7 +57,7 @@ import testimonialRoutes from "./routes/testimonialRoutes"
 import statsRoutes from "./routes/statsRoutes"
 import demoLectureRoutes from "./routes/demoLectureRoutes"
 import courseRoutes from "./routes/courseRoutes"
-import enrollmentRoutes from "./routes/enrollmentRoutes"
+// import enrollmentRoutes from "./routes/enrollmentRoutes"
 
 dotenv.config()
 connectDB()
@@ -96,7 +96,7 @@ app.use("/api/testimonials", testimonialRoutes)
 app.use("/api/stats", statsRoutes)
 app.use("/api/demo-lectures", demoLectureRoutes)
 app.use("/api/courses", courseRoutes)
-app.use("/api/enrollments", enrollmentRoutes)
+// app.use("/api/enrollments", enrollmentRoutes)
 
 app.get("/", (req, res) => {
   res.send("API running")
