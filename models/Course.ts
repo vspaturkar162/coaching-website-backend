@@ -13,14 +13,14 @@ export interface ICourse extends Document {
 
 const CourseSchema: Schema = new Schema(
   {
-    name: { type: String, required: true },
-    description: { type: String, required: false, default: "" },
+    name: { type: String, required: true },        // only these 2 are truly required
     className: { type: String, required: true },
-    exam: { type: String, required: false, default: "" },
-    professor: { type: String, required: false, default: "" },
-    duration: { type: String, required: false, default: "" },
-    fees: { type: String, required: false, default: "" },
-    imageUrl: { type: String, required: false, default: "" }
+    description: { type: String, default: "" },    // rest are optional
+    exam: { type: String, default: "" },
+    professor: { type: String, default: "" },
+    duration: { type: String, default: "" },
+    fees: { type: String, default: "" },
+    imageUrl: { type: String, default: "" }
   },
   { timestamps: true }
 )

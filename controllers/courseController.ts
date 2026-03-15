@@ -10,6 +10,7 @@ export const getCourses = async (
     const courses = await Course.find().sort({ createdAt: -1 })
     res.json(courses)
   } catch (error) {
+    console.error("getCourses error:", error)
     res.status(500).json({ message: "Error fetching courses" })
   }
 }
@@ -25,15 +26,26 @@ export const addCourse = async (
       exam, professor, duration, fees, imageUrl
     } = req.body
 
+    // Log incoming data to see what's arriving
+    console.log("addCourse body:", req.body)
+
     const course = new Course({
-      name, description, className,
-      exam, professor, duration, fees, imageUrl
+      name,
+      description: description || "",
+      className,
+      exam: exam || "",
+      professor: professor || "",
+      duration: duration || "",
+      fees: fees || "",
+      imageUrl: imageUrl || ""
     })
 
     const saved = await course.save()
+    console.log("Course saved:", saved._id)
     res.status(201).json(saved)
   } catch (error) {
-    res.status(500).json({ message: "Error adding course" })
+    console.error("addCourse error:", error)  // ← this will show in Render logs
+    res.status(500).json({ message: "Error adding course", error: String(error) })
   }
 }
 
@@ -44,14 +56,23 @@ export const updateCourse = async (
 ): Promise<void> => {
   try {
     const { id } = req.params
+    console.log("updateCourse id:", id, "body:", req.body)
+
     const updated = await Course.findByIdAndUpdate(
       id,
       req.body,
-      { new: true }
+      { new: true, runValidators: true }
     )
+
+    if (!updated) {
+      res.status(404).json({ message: "Course not found" })
+      return
+    }
+
     res.json(updated)
   } catch (error) {
-    res.status(500).json({ message: "Error updating course" })
+    console.error("updateCourse error:", error)
+    res.status(500).json({ message: "Error updating course", error: String(error) })
   }
 }
 
@@ -65,9 +86,11 @@ export const deleteCourse = async (
     await Course.findByIdAndDelete(id)
     res.json({ message: "Course deleted" })
   } catch (error) {
+    console.error("deleteCourse error:", error)
     res.status(500).json({ message: "Error deleting course" })
   }
 }
+
 // import { Request, Response } from "express"
 // import Enrollment from "../models/Course"
 
